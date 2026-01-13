@@ -1,0 +1,55 @@
+{
+  "short_name": "Photobooth Madiun",
+  "name": "Photobooth Madiun - Capture Your Moments",
+  "description": "Professional photobooth application with instant editing and QR code sharing",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["photography", "entertainment", "utilities"],
+  "screenshots": [
+    {
+      "src": "assets/screenshot-1.png",
+      "type": "image/png",
+      "sizes": "1280x720"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Take Photo",
+      "short_name": "Capture",
+      "description": "Open camera to take a photo",
+      "url": "/capture",
+      "icons": [{ "src": "assets/icons/camera.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Gallery",
+      "short_name": "Gallery",
+      "description": "View your photos",
+      "url": "/gallery",
+      "icons": [{ "src": "assets/icons/gallery.png", "sizes": "96x96" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

@@ -1,30 +1,47 @@
 import React from 'react';
 
-export const Card = ({ 
+const Card = ({ 
   children, 
-  title = null,
-  subtitle = null,
-  variant = 'default',
-  className = ''
+  title, 
+  subtitle,
+  footer,
+  hover = false,
+  padding = 'normal',
+  className = '' 
 }) => {
-  const variants = {
-    default: 'bg-white border border-gray-200',
-    gradient: 'bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200',
-    dark: 'bg-gray-800 text-white border border-gray-700',
-    success: 'bg-green-50 border border-green-200',
-    warning: 'bg-yellow-50 border border-yellow-200',
-    danger: 'bg-red-50 border border-red-200'
+  const paddings = {
+    none: 'p-0',
+    small: 'p-4',
+    normal: 'p-6',
+    large: 'p-8'
   };
 
+  const hoverClass = hover ? 'card-hover cursor-pointer' : '';
+
   return (
-    <div className={`rounded-xl shadow-lg p-6 ${variants[variant]} ${className}`}>
+    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-soft ${hoverClass} ${className}`}>
       {title && (
-        <div className="mb-4">
-          <h3 className="text-xl font-bold">{title}</h3>
-          {subtitle && <p className="text-sm text-gray-600 mt-1">{subtitle}</p>}
+        <div className={`border-b border-gray-200 dark:border-gray-700 ${paddings[padding]}`}>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+            {title}
+          </h3>
+          {subtitle && (
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              {subtitle}
+            </p>
+          )}
         </div>
       )}
-      {children}
+      
+      <div className={paddings[padding]}>
+        {children}
+      </div>
+
+      {footer && (
+        <div className={`border-t border-gray-200 dark:border-gray-700 ${paddings[padding]} bg-gray-50 dark:bg-gray-900`}>
+          {footer}
+        </div>
+      )}
     </div>
   );
 };

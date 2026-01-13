@@ -1,37 +1,100 @@
 import React from 'react';
+import { Loader2 } from 'lucide-react';
 
-export const Loading = ({ 
+const Loading = ({ 
+  size = 'md', 
   text = 'Loading...', 
-  size = 'md',
-  variant = 'spinner'
+  fullScreen = false,
+  overlay = false 
 }) => {
   const sizes = {
-    sm: 'w-8 h-8',
-    md: 'w-12 h-12',
-    lg: 'w-16 h-16'
+    sm: 24,
+    md: 40,
+    lg: 56,
+    xl: 72
   };
 
-  if (variant === 'spinner') {
+  const textSizes = {
+    sm: 'text-sm',
+    md: 'text-base',
+    lg: 'text-lg',
+    xl: 'text-xl'
+  };
+
+  const LoadingContent = () => (
+    <div className="flex flex-col items-center justify-center space-y-4">
+      <Loader2 
+        className="animate-spin text-madiun-primary" 
+        size={sizes[size]} 
+      />
+      {text && (
+        <p className={`${textSizes[size]} font-medium text-gray-600 dark:text-gray-400`}>
+          {text}
+        </p>
+      )}
+    </div>
+  );
+
+  if (fullScreen) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4">
-        <div className={`border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin ${sizes[size]}`} />
-        {text && <p className="text-gray-600">{text}</p>}
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900">
+        <LoadingContent />
       </div>
     );
   }
 
-  if (variant === 'dots') {
+  if (overlay) {
     return (
-      <div className="flex items-center gap-2">
-        <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-        <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-        <div className="w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-        {text && <p className="ml-2 text-gray-600">{text}</p>}
+      <div className="absolute inset-0 z-40 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
+        <LoadingContent />
       </div>
     );
   }
 
-  return null;
+  return (
+    <div className="flex items-center justify-center p-8">
+      <LoadingContent />
+    </div>
+  );
+};
+
+// Spinner only (no text)
+export const Spinner = ({ size = 'md', className = '' }) => {
+  const sizes = {
+    sm: 16,
+    md: 24,
+    lg: 32,
+    xl: 40
+  };
+
+  return (
+    <Loader2 
+      className={`animate-spin text-madiun-primary ${className}`} 
+      size={sizes[size]} 
+    />
+  );
+};
+
+// Skeleton loader for content placeholders
+export const Skeleton = ({ width = '100%', height = '20px', className = '' }) => {
+  return (
+    <div 
+      className={`skeleton rounded ${className}`}
+      style={{ width, height }}
+    />
+  );
+};
+
+// Card Skeleton
+export const CardSkeleton = () => {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 space-y-4">
+      <Skeleton height="200px" />
+      <Skeleton width="60%" height="24px" />
+      <Skeleton width="80%" height="16px" />
+      <Skeleton width="40%" height="16px" />
+    </div>
+  );
 };
 
 export default Loading;
