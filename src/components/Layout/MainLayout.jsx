@@ -2,26 +2,16 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
-import { useSession } from '../../context/SessionContext';
 
 const MainLayout = () => {
   const location = useLocation();
-  const { isActive, startSession } = useSession();
-
-  // Auto-start session if not active
-  useEffect(() => {
-    if (!isActive) {
-      startSession();
-    }
-  }, [isActive, startSession]);
 
   // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // Check if current route should hide header/footer (e.g., capture page)
-  const isFullscreenRoute = ['/capture', '/edit'].some(route => 
+  const isFullscreenRoute = ['/capture', '/edit'].some(route =>
     location.pathname.startsWith(route)
   );
 
