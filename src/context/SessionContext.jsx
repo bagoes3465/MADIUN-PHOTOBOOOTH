@@ -10,144 +10,65 @@ export const useSession = () => {
   return context;
 };
 
+// Generate unique session ID
+const generateSessionId = () => {
+  return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+};
+
 export const SessionProvider = ({ children }) => {
-  const [sessionId, setSessionId] = useState(null);
-  const [sessionStartTime, setSessionStartTime] = useState(null);
-  const [photoCount, setPhotoCount] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-  const [sessionData, setSessionData] = useState({});
+  const [sessionId, setSessionId] = useState(() => {
+    // Get or create session ID
+    const saved = localStorage.getItem('sessionId');
+    return saved || generateSessionId();
+  });
 
-  // Initialize session on mount
+  const [photos, setPhotos] = useState(() => {
+    // Load saved photos for this session
+    const saved = localStorage.getItem(`photos_${sessionId}`);
+    return saved ? JSON.parse(saved) : [];
+  });
+
   useEffect(() => {
-    const savedSession = localStorage.getItem('photobooth_session');
-    if (savedSession) {
-      try {
-        const session = JSON.parse(savedSession);
-        // Check if session is still valid (not expired)
-        const timeout = parseInt(process.env.REACT_APP_SESSION_TIMEOUT || 3600000);
-        const elapsed = Date.now() - new Date(session.startTime).getTime();
-        
-        if (elapsed < timeout) {
-          setSessionId(session.id);
-          setSessionStartTime(session.startTime);
-          setPhotoCount(session.photoCount);
-          setIsActive(true);
-          setSessionData(session.data || {});
-        } else {
-          // Session expired, clear it
-          endSession();
-        }
-      } catch (error) {
-        console.error('Error loading session:', error);
-      }
-    }
-  }, []);
+    // Save session ID
+    localStorage.setItem('sessionId', sessionId);
+  }, [sessionId]);
 
-  // Save session to localStorage
-  const saveSession = () => {
-    const session = {
-      id: sessionId,
-      startTime: sessionStartTime,
-      photoCount,
-      data: sessionData
+  useEffect(() => {
+    // Save photos for this session
+    localStorage.setItem(`photos_${sessionId}`, JSON.stringify(photos));
+  }, [photos, sessionId]);
+
+  const addPhoto = (photo) => {
+    const newPhoto = {
+      id: `photo_${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      ...photo
     };
-    localStorage.setItem('photobooth_session', JSON.stringify(session));
+    setPhotos(prev => [newPhoto, ...prev]);
+    return newPhoto;
   };
 
-  // Start new session
-  const startSession = (data = {}) => {
-    const newSessionId = `session_${Date.now()}`;
-    const startTime = new Date().toISOString();
-    
+  const deletePhoto = (photoId) => {
+    setPhotos(prev => prev.filter(p => p.id !== photoId));
+  };
+
+  const clearPhotos = () => {
+    setPhotos([]);
+  };
+
+  const resetSession = () => {
+    const newSessionId = generateSessionId();
     setSessionId(newSessionId);
-    setSessionStartTime(startTime);
-    setPhotoCount(0);
-    setIsActive(true);
-    setSessionData(data);
-
-    // Save to localStorage
-    const session = {
-      id: newSessionId,
-      startTime,
-      photoCount: 0,
-      data
-    };
-    localStorage.setItem('photobooth_session', JSON.stringify(session));
-
-    return newSessionId;
-  };
-
-  // End session
-  const endSession = () => {
-    setSessionId(null);
-    setSessionStartTime(null);
-    setPhotoCount(0);
-    setIsActive(false);
-    setSessionData({});
-    localStorage.removeItem('photobooth_session');
-  };
-
-  // Increment photo count
-  const incrementPhotoCount = () => {
-    setPhotoCount(prev => {
-      const newCount = prev + 1;
-      // Update in localStorage
-      const savedSession = localStorage.getItem('photobooth_session');
-      if (savedSession) {
-        const session = JSON.parse(savedSession);
-        session.photoCount = newCount;
-        localStorage.setItem('photobooth_session', JSON.stringify(session));
-      }
-      return newCount;
-    });
-  };
-
-  // Update session data
-  const updateSessionData = (key, value) => {
-    setSessionData(prev => {
-      const updated = { ...prev, [key]: value };
-      // Save to localStorage
-      const savedSession = localStorage.getItem('photobooth_session');
-      if (savedSession) {
-        const session = JSON.parse(savedSession);
-        session.data = updated;
-        localStorage.setItem('photobooth_session', JSON.stringify(session));
-      }
-      return updated;
-    });
-  };
-
-  // Get session duration
-  const getSessionDuration = () => {
-    if (!sessionStartTime) return 0;
-    return Date.now() - new Date(sessionStartTime).getTime();
-  };
-
-  // Get session stats
-  const getSessionStats = () => {
-    return {
-      id: sessionId,
-      startTime: sessionStartTime,
-      duration: getSessionDuration(),
-      photoCount,
-      isActive,
-      data: sessionData
-    };
+    setPhotos([]);
   };
 
   const value = {
     sessionId,
-    sessionStartTime,
-    photoCount,
-    isActive,
-    sessionData,
-    startSession,
-    endSession,
-    incrementPhotoCount,
-    updateSessionData,
-    getSessionDuration,
-    getSessionStats,
-    saveSession
+    photos,
+    addPhoto,
+    deletePhoto,
+    clearPhotos,
+    resetSession
   };
 
   return (

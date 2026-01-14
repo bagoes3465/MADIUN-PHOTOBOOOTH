@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Camera, Heart, Facebook, Instagram, Twitter, Mail } from 'lucide-react';
-import { CONFIG, SOCIAL_LINKS } from 'src\constants\config.js';
+import { CONFIG, SOCIAL_LINKS } from 'src/constants/config';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
