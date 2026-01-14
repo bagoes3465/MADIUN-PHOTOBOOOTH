@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Camera, Heart, Facebook, Instagram, Twitter, Mail } from 'lucide-react';
-import { CONFIG, SOCIAL_LINKS } from 'src/constants/config';
+import { CONFIG, SOCIAL_LINKS } from '../../constants/config';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -21,10 +21,12 @@ const Footer = () => {
                 <p className="text-sm text-gray-400">Capture Your Moments</p>
               </div>
             </div>
+
             <p className="text-sm text-gray-400 mb-4 max-w-md">
-              {CONFIG.APP_DESCRIPTION}. Professional photobooth application with instant editing, 
+              {CONFIG.APP_DESCRIPTION}. Professional photobooth application with instant editing,
               filters, frames, and QR code sharing capabilities.
             </p>
+
             <div className="flex space-x-4">
               <a
                 href={SOCIAL_LINKS.facebook}
@@ -54,7 +56,7 @@ const Footer = () => {
                 <Twitter size={20} />
               </a>
               <a
-                href={`mailto:support@photoboothmadiun.com`}
+                href="mailto:support@photoboothmadiun.com"
                 className="p-2 rounded-lg bg-gray-800 hover:bg-madiun-primary transition-colors duration-300"
                 aria-label="Email"
               >
@@ -67,26 +69,10 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-sm hover:text-madiun-primary transition-colors duration-300">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/capture" className="text-sm hover:text-madiun-primary transition-colors duration-300">
-                  Take Photo
-                </Link>
-              </li>
-              <li>
-                <Link to="/gallery" className="text-sm hover:text-madiun-primary transition-colors duration-300">
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link to="/admin" className="text-sm hover:text-madiun-primary transition-colors duration-300">
-                  Admin Panel
-                </Link>
-              </li>
+              <li><Link to="/" className="text-sm hover:text-madiun-primary">Home</Link></li>
+              <li><Link to="/capture" className="text-sm hover:text-madiun-primary">Take Photo</Link></li>
+              <li><Link to="/gallery" className="text-sm hover:text-madiun-primary">Gallery</Link></li>
+              <li><Link to="/admin" className="text-sm hover:text-madiun-primary">Admin Panel</Link></li>
             </ul>
           </div>
 
@@ -94,26 +80,10 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-4">Support</h4>
             <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-sm hover:text-madiun-primary transition-colors duration-300">
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm hover:text-madiun-primary transition-colors duration-300">
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm hover:text-madiun-primary transition-colors duration-300">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm hover:text-madiun-primary transition-colors duration-300">
-                  Terms of Service
-                </a>
-              </li>
+              <li><Link to="/help" className="text-sm hover:text-madiun-primary">Help Center</Link></li>
+              <li><Link to="/faq" className="text-sm hover:text-madiun-primary">FAQ</Link></li>
+              <li><Link to="/privacy-policy" className="text-sm hover:text-madiun-primary">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-sm hover:text-madiun-primary">Terms of Service</Link></li>
             </ul>
           </div>
         </div>
@@ -128,7 +98,6 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Version Info */}
         {CONFIG.DEBUG_MODE && (
           <div className="text-center mt-4">
             <p className="text-xs text-gray-600">

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import Header from 'src/components/Layout/Header';
-import Footer from 'src/components/Layout/Footer';
-import { useSession } from 'src/context/SessionContext';
+import Header from './Header';
+import Footer from './Footer';
+import { useSession } from '../../context/SessionContext';
 
 const MainLayout = () => {
   const location = useLocation();
